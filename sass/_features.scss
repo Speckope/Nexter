@@ -1,0 +1,44 @@
+.features {
+  grid-column: center-start / center-end;
+
+  margin: 15rem 0;
+
+  display: grid;
+  // grid-template-columns: repeat(3, 1fr);
+  // auto-fit creates as many tracks as it can based on defined width!
+  // And we define width with minmax!
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  // we could add this property but!! it would be redundant due to the simple fact
+  // that in fact implicite rows will be added anyway!
+  // grid-template-rows: auto auto;
+  gap: 6rem;
+  align-items: start;
+  @media only screen and (max-width: $bp-medium) {
+    padding: 1rem;
+  }
+}
+
+// so we nest grids further. Set feature as grid, then divide it in 2
+// set min content for first column, rest for 2nd, place in 1st our icon
+// and rest is put in 2nd!
+
+.feature {
+  display: grid;
+  // we use min content bc this way width of 1st column it will adjust
+  grid-template-columns: min-content 1fr;
+  row-gap: 1.5rem;
+  column-gap: 2.5rem;
+
+  &__icon {
+    fill: $color-primary;
+    width: 4.5rem;
+    height: 4.5rem;
+    // -1 means not the end of grid, but end of EXPLICITE grid
+    grid-row: 1 / span 2;
+    transform: translateY(-1rem);
+  }
+
+  &__text {
+    font-size: 1.7rem;
+  }
+}

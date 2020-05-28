@@ -1,0 +1,91 @@
+// COLOR VARIABLES
+$color-primary: #c69963;
+$color-primary-dark: #b28451;
+
+$color-secondary: #101d2c;
+
+$color-grey-light-1: #f9f7f6;
+$color-grey-light-2: #aaa;
+
+$color-grey-dark-1: #54483a;
+$color-grey-dark-2: #6d5d4b;
+
+// FONT VARIABLES
+$font-primary: 'Nunito', sans-serif;
+$font-display: 'Josefin Sans', sans-serif;
+
+// Responsive breakpoints
+$bp-largest: 75em; //1200px
+$bp-large: 62.5em; //1000px
+$bp-medium: 50em; //800px
+$bp-small: 37.5em; //600px
+
+*,
+*::before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // 10px/16px(browser default) = 62.5% => 1rem = 10px
+  @media only screen and (max-width: $bp-largest) {
+    font-size: 50%;
+  }
+}
+
+body {
+  font-family: $font-primary;
+  color: $color-grey-dark-2;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.container {
+  display: grid;
+  //   min-content means to have have at least so much space to fit content
+  // in this real world scenario we r using responsive units. Its important to think abou responsiveness right from the beginning!
+  //   Its sometimes very useful to let rows have height of its content
+  grid-template-rows: 80vh min-content 40vw repeat(3, min-content);
+  //   we start with 8 column grid design
+  //   this makes us 8 columns with each having min width equal to content and max equal to 14rem!!
+  //   and 8rem sidebar :o
+  // AND one column on right, one on left, occupying remaining space (1fr)
+  // This is actually quite clever
+  // This layout also lets us break out from predefined columns and make 'fullbleed sections'
+  // we are naming columns and not rows, bc in overall layout focus is more often focused on columns
+  grid-template-columns:
+    [sidebar-start] 8rem [sidebar-end full-start] minmax(6rem, 1fr)
+    [center-start] repeat(8, [col-start] minmax(min-content, 14rem) [col-end])
+    [center-end] minmax(6rem, 1fr) [full-end];
+
+  @media only screen and (max-width: $bp-large) {
+    // we delete on column left and insert one top!
+    // grid makes it possible to make big changes with little code for responsive design!
+    // Thats also a good case for naming grid columns!! We would have to rewrite it, brr!
+
+    grid-template-rows: 6rem 80vh min-content 40vw repeat(3, min-content);
+    grid-template-columns:
+      [full-start] minmax(6rem, 1fr)
+      [center-start] repeat(8, [col-start] minmax(min-content, 14rem) [col-end])
+      [center-end] minmax(6rem, 1fr) [full-end];
+  }
+  @media only screen and (max-width: $bp-medium) {
+    // we add new row and use calc function subtracting
+    // height of sidebar so we get immidiately next section on scroll!
+    // grid-template-rows: 6rem calc(100vh - 6rem) min-content min-content min-content repeat(
+    //     3,
+    //     min-content
+    //   );
+    // we deleted min content, bc automatic placement will take care of it and when
+    // we resize, notent will have min width regardless
+    grid-template-rows: 6rem calc(100vh - 6rem);
+
+    grid-template-columns:
+      [full-start] minmax(0, 1fr)
+      [center-start] repeat(8, [col-start] minmax(0, 14rem) [col-end])
+      [center-end] minmax(0, 1fr) [full-end];
+  }
+}
